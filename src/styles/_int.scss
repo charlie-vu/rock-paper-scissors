@@ -10,6 +10,10 @@
   .fw-#{$weight} {
     font-weight: $weight !important;
   }
+
+  .z-index-n#{$i}{
+    z-index: -#{$i};
+  }
 }
 
 .min-w-100 {

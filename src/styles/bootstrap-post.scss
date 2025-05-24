@@ -1,7 +1,6 @@
-@import 'colors';
+@import "colors";
 
 @import "bootstrap/scss/bootstrap";
-@import "bootstrap-icons/font/bootstrap-icons.css";
 
 // ====== Enable Responsive
 @import "bootstrap/scss/functions";
@@ -21,6 +20,25 @@ $utilities: map-merge(
           responsive: true,
         )
       ),
+    "width":
+      map-merge(
+        map-get($utilities, "width"),
+        (
+          responsive: true,
+        )
+      ),
+    "letter-spacing": (
+      property: letter-spacing,
+      class: tracking,
+      values: (
+        tight: -0.05em,
+        normal: 0,
+        wide: 0.05em,
+        wider: 0.1em,
+        widest: 0.2em,
+      ),
+      responsive: true,
+    ),
   )
 );
 

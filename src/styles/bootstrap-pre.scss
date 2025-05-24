@@ -1,14 +1,5 @@
 @import 'colors';
 
-$primary: $purple-600;
-$secondary: $blue-50;
-$danger: $red-500;
-$muted: $grey-500;
-// $body-bg: $blue-200;
-// $enable-placeholder: true;
-$dark: $blue-950;
-$body-color: $blue-950;
-
 $spacer: 1rem;
 $spacers: (
   0: 0,
@@ -24,22 +15,16 @@ $spacers: (
   9: $spacer * 9,
 );
 
+$dark: $text-dark;
+
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
 
 // Create your own map
 $custom-colors: (
-  'blue-950': $blue-950,
-  'purple-600': $purple-600,
-  'blue-300': $blue-300,
-  'blue-200': $blue-200,
-  'red-500': $red-500,
-  'grey-500': $grey-500,
-  'purple-200': $purple-200,
-  'blue-100': $blue-100,
-  'blue-50': $blue-50,
-  'white': $white,
+  'score': $text-score,
+  'outline': $header-outline,
 );
 
 // Merge the maps

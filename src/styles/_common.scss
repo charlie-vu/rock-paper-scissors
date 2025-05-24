@@ -2,15 +2,12 @@
   margin: 0;
   padding: 0;
 }
-body {
-  background-color: $blue-100;
 
-  background-image: url("/assets/images/bg-sidebar-mobile.svg");
+body {
+  background-image: linear-gradient($bg-start, $bg-end);
   background-repeat: no-repeat;
-  background-size: contain;
-  @media (min-width: 992px) {
-    background-image: none;
-  }
+
+  color: var(--bs-light);
 }
 
 h1,
@@ -58,22 +55,35 @@ a {
     box-shadow: none;
   }
 }
+.hover-glow {
+  transition: box-shadow 0.2s;
+  &:hover {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
+      0 0 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.15);
+  }
+  &:active {
+    box-shadow: none
+  }
+}
 
 .text-muted {
   opacity: 0.75;
 }
 
-.option {
-  cursor: pointer;
-  transition: all 0.1s;
-  &:hover {
-    border-color: $purple-600;
+.bg-choice {
+  &-rock {
+    background-image: linear-gradient($rock-start, $rock-end);
   }
-  &.active {
-    border-color: $purple-600;
-    background-color: $blue-50;
+  &-paper {
+    background-image: linear-gradient($paper-start, $paper-end);
   }
-  &:active {
-    transform: translateY(4px);
+  &-scissors {
+    background-image: linear-gradient($scissors-start, $scissors-end);
+  }
+  &-lizard {
+    background-image: linear-gradient($lizard-start, $lizard-end);
+  }
+  &-spock {
+    background-image: linear-gradient($spock-start, $spock-end);
   }
 }
