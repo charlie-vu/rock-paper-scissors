@@ -12,12 +12,22 @@ export default function Home() {
   const [playerChoice, setPlayerChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [doneThinking, setDoneThinking] = useState(false);
+  const [winner, setWinner] = useState(null);
+
+  const [isBonus, setIsBonus] = useState(true);
+  const [choiceList, setChoiceList] = useState([])
+
+  const resultStrings = {
+    user: 'YOU WIN',
+    computer: 'YOU LOSE',
+    tie: 'TIE',
+  };
 
   const getRandomChoice = () => {
     setComputerChoice((prev) => {
       let newChoice;
       do {
-        newChoice = _.sample(game.choiceList)
+        newChoice = _.sample(choiceList)
       } while (newChoice === prev);
 
       return newChoice;
@@ -25,15 +35,29 @@ export default function Home() {
 
   };
 
+  const getWinner = () => {
+    if (playerChoice === computerChoice) {
+      setWinner('tie')
+    } else if (game.rules[playerChoice].includes(computerChoice)) {
+      setWinner('user')
+    } else {
+      setWinner('computer')
+    }
+  }
+
   const reset = () => {
     setPlayerChoice(null)
     setComputerChoice(null)
+    setDoneThinking(false)
   }
 
   useEffect(() => {
     if (!playerChoice) return;
 
-    const totalSteps = 30;
+    // setComputerChoice('paper');
+    // setDoneThinking(true);
+
+    const totalSteps = 20;
     const timeouts = [];
     setDoneThinking(false);
 
@@ -68,21 +92,50 @@ export default function Home() {
     };
   }, [playerChoice])
 
+  useEffect(() => {
+    if (!doneThinking) return;
+    // console.log(playerChoice)
+    // console.log(computerChoice)
+    getWinner();
+  }, [doneThinking])
+
+  useEffect(() => {
+    if (isBonus) {
+      setChoiceList(game.choiceListBonus)
+    } else {
+      setChoiceList(game.choiceListOrigin)
+    }
+  }, [isBonus])
+
+  if (!choiceList || !choiceList.length) return null;
+
   return (
     <>
-      <div className="home py-5 min-vh-100">
-        <div className="container">
+      <div className="home d-stack py-5 min-vh-100">
+        <div className="container flex-grow-1">
           <div className="card bg-transparent text-bg-dark px-4 py-3 border-3 border-outline rounded-4 mx-auto" style={{ maxWidth: 720 }}>
             <div className="d-flex gap-3 justify-content-between align-items-center">
               <div className="fs-4" style={{ lineHeight: 0.8 }}>
-                <p>ROCK</p>
-                <p>PAPER</p>
-                <p>SCISSORS</p>
-                <p>LIZARD</p>
-                <p>SPOCK</p>
+                {
+                  isBonus ?
+                    <>
+                      <p>ROCK</p>
+                      <p>PAPER</p>
+                      <p>SCISSORS</p>
+                      <p>LIZARD</p>
+                      <p>SPOCK</p>
+                    </>
+                    :
+                    <>
+                      <p>ROCK</p>
+                      <p>PAPER</p>
+                      <p>SCISSORS</p>
+                    </>
+                }
+
               </div>
 
-              <div className="card px-5 py-3 text-center">
+              <div className="card p-3 px-lg-5 py-3 text-center">
                 <p className="text-score tracking-widest fs-5">SCORE</p>
                 <p className="display-4 lh-1 fw-bold text-dark">999</p>
               </div>
@@ -93,8 +146,8 @@ export default function Home() {
             <AnimatePresence mode='wait'>
               {
                 !playerChoice ?
-                  <motion.div key={playerChoice} {...vortex}>
-                    <PlayerBoard onChange={(e) => { setPlayerChoice(e) }} />
+                  <motion.div key={`${playerChoice}-${isBonus}`} {...vortex}>
+                    <PlayerBoard choiceList={choiceList} onChange={(e) => { setPlayerChoice(e) }} onChangeMode={() => { setIsBonus((prev) => !prev) }} />
                   </motion.div> :
                   <motion.div key={playerChoice} {...scale}>
 
@@ -110,9 +163,9 @@ export default function Home() {
                           {
                             doneThinking &&
                             <motion.div {...scale} transition={{ type: "spring", duration: 0.3, delay: 0.5 }} className="d-stack justify-content-center text-center h-100">
-                              <p className="fw-bold display-4">YOU WIN</p>
+                              <p className="fw-bold display-4 text-uppercase">{winner && resultStrings[winner]}</p>
                               <div>
-                                <button className="btn btn-light text-dark fw-semibold fs-4 mt-3 px-5" onClick={reset}>Play Again</button>
+                                <button className="btn btn-light fw-semibold fs-4 mt-3 px-5 text-uppercase" onClick={reset}>Play Again</button>
                               </div>
                             </motion.div>
                           }
@@ -137,7 +190,14 @@ export default function Home() {
           </div>
 
         </div>
-      </div >
+
+        <div className="container">
+          <div className="d-flex flex-column flex-lg-row gap-3 justify-content-end align-items-center">
+            <button className="btn btn-outline-light text-uppercase" onClick={() => { setIsBonus((prev) => !prev) }} disabled={playerChoice}>Change Mode</button>
+            <button className="btn btn-outline-light text-uppercase">Rules</button>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

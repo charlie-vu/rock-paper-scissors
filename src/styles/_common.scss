@@ -29,7 +29,9 @@ a {
   color: inherit;
 }
 
-.container{
+.container {
+  padding-left: 16px;
+  padding-right: 16px;
   @media (min-width: 1200px) {
     max-width: 1140px;
   }
@@ -75,6 +77,14 @@ a {
 
 .btn {
   transition: all 0.1s;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-weight: 600;
+
+  &-light {
+    color: $text-dark;
+  }
+
   &:active {
     transform: scale(0.95);
   }
@@ -100,4 +110,11 @@ a {
   &-spock {
     background-image: linear-gradient($spock-start, $spock-end);
   }
+}
+
+.top-auto {
+  top: auto !important;
+}
+.start-auto {
+  left: auto !important;
 }

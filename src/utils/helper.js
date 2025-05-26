@@ -1,5 +1,6 @@
 export const game = {
-    choiceList: ['scissors', 'paper', 'rock', 'lizard', 'spock'],
+    choiceListBonus: ['scissors', 'paper', 'rock', 'lizard', 'spock',],
+    choiceListOrigin: ['scissors', 'paper', 'rock',],
 
     icons: {
         rock: '/images/icon-rock.svg',
