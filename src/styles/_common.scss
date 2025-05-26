@@ -29,6 +29,12 @@ a {
   color: inherit;
 }
 
+.container{
+  @media (min-width: 1200px) {
+    max-width: 1140px;
+  }
+}
+
 .cursor-pointer {
   cursor: pointer !important;
 }
@@ -56,13 +62,21 @@ a {
   }
 }
 .hover-glow {
-  transition: box-shadow 0.2s;
+  transition: all 0.2s;
   &:hover {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
       0 0 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.15);
   }
   &:active {
-    box-shadow: none
+    box-shadow: none;
+    filter: brightness(0.8);
+  }
+}
+
+.btn {
+  transition: all 0.1s;
+  &:active {
+    transform: scale(0.95);
   }
 }
 
