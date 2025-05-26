@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { Fragment, useEffect, useState } from 'react';
 
-import { scale, vortex } from '@/utils/transition';
+import { fromRight, scale, vortex } from '@/utils/transition';
 import PlayerBoard from '@/components/PlayerBoard';
 import { game } from '@/utils/helper';
 import ChoiceButton from '@/components/ChoiceButton';
@@ -113,27 +113,29 @@ export default function Home() {
     <>
       <div className="home d-stack py-5 min-vh-100">
         <div className="container flex-grow-1">
-          <div className="card bg-transparent text-bg-dark px-4 py-3 border-3 border-outline rounded-4 mx-auto" style={{ maxWidth: 720 }}>
+          <div className="card bg-transparent text-bg-dark p-3 border-3 border-outline rounded-4 mx-auto" style={{ maxWidth: 720 }}>
             <div className="d-flex gap-3 justify-content-between align-items-center">
-              <div className="fs-4" style={{ lineHeight: 0.8 }}>
-                {
-                  isBonus ?
-                    <>
-                      <p>ROCK</p>
-                      <p>PAPER</p>
-                      <p>SCISSORS</p>
-                      <p>LIZARD</p>
-                      <p>SPOCK</p>
-                    </>
-                    :
-                    <>
-                      <p>ROCK</p>
-                      <p>PAPER</p>
-                      <p>SCISSORS</p>
-                    </>
-                }
 
-              </div>
+              <AnimatePresence mode='wait'>
+                <motion.div key={isBonus} {...fromRight} className="fs-4" style={{ lineHeight: 0.8 }}>
+                  {
+                    isBonus ?
+                      <>
+                        <p>ROCK</p>
+                        <p>PAPER</p>
+                        <p>SCISSORS</p>
+                        <p>LIZARD</p>
+                        <p>SPOCK</p>
+                      </>
+                      :
+                      <>
+                        <p>ROCK</p>
+                        <p>PAPER</p>
+                        <p>SCISSORS</p>
+                      </>
+                  }
+                </motion.div>
+              </AnimatePresence>
 
               <div className="card p-3 px-lg-5 py-3 text-center">
                 <p className="text-score tracking-widest fs-5">SCORE</p>
@@ -151,11 +153,11 @@ export default function Home() {
                   </motion.div> :
                   <motion.div key={playerChoice} {...scale}>
 
-                    <div className="row text-center justify-content-center gx-0">
+                    <div className="row text-center justify-content-center gx-0 mt-5">
                       <div className="col-6 col-lg">
-                        <div className="d-stack align-items-center">
-                          <p className="fw-bold fs-4 tracking-wider">YOU PICKED</p>
-                          <ChoiceButton choice={playerChoice} width={'70%'} className="mt-5" />
+                        <div className="d-stack align-items-center gap-3 gap-lg-5">
+                          <ChoiceButton choice={playerChoice} width={'70%'} />
+                          <p className="fw-bold fs-6 fs-lg-4 tracking-wider order-lg-first">YOU PICKED</p>
                         </div>
                       </div>
                       {
@@ -174,10 +176,9 @@ export default function Home() {
                       }
 
                       <div className="col-6 col-lg">
-                        <div className="d-stack align-items-center">
-                          <p className="fw-bold fs-4 tracking-wider">THE HOUSE PICKED</p>
-                          <ChoiceButton choice={computerChoice} width={'70%'} className="mt-5" />
-
+                        <div className="d-stack align-items-center gap-3 gap-lg-5">
+                          <ChoiceButton choice={computerChoice} width={'70%'} />
+                          <p className="fw-bold fs-6 fs-lg-4 tracking-wider order-lg-first">THE HOUSE PICKED</p>
                         </div>
                       </div>
                     </div>

@@ -80,6 +80,7 @@ a {
   border-radius: 8px;
   padding: 8px 24px;
   font-weight: 600;
+  min-width: 120px;
 
   &-light {
     color: $text-dark;
