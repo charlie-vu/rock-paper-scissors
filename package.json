@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/third-parties": "^15.4.0-canary.51",
     "bootstrap": "^5.3.6",
     "lodash": "^4.17.21",
     "motion": "^12.12.2",
