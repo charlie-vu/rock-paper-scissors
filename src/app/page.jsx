@@ -9,6 +9,7 @@ import ChoiceButton from '@/components/ChoiceButton';
 import _ from 'lodash';
 import { Modal } from 'react-bootstrap';
 import { useScreen } from '@/hooks/useScreen';
+import Ripple from '@/components/Ripple';
 
 const logo = '/images/logo.svg';
 const logoBonus = '/images/logo-bonus.svg';
@@ -137,7 +138,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="home d-stack py-5 min-vh-100">
+      <div className="home d-stack py-5 min-vh-100 overflow-hidden">
         <div className="container flex-grow-1">
           <div className="card bg-transparent text-bg-dark p-3 border-3 border-outline rounded-4 mx-auto" style={{ maxWidth: 720 }}>
             <div className="d-flex gap-3 justify-content-between align-items-center">
@@ -153,7 +154,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="pt-5 overflow-hidden">
+          <div className="pt-5">
             <AnimatePresence mode='wait'>
               {
                 !playerChoice ?
@@ -165,8 +166,8 @@ export default function Home() {
 
                     <div className="row text-center justify-content-center gx-0 mt-5">
                       <div className="col-6 col-lg">
-                        <div className="d-stack align-items-center gap-3 gap-lg-5">
-                          <ChoiceButton choice={playerChoice} width={'70%'} />
+                        <div className="d-stack align-items-center gap-3 gap-lg-5 position-relative">
+                          <ChoiceButton choice={playerChoice} width={'70%'} ripple={doneThinking && winner === 'user'} />
                           <p className="fw-bold fs-6 fs-lg-4 tracking-wider order-lg-first">YOU PICKED</p>
                         </div>
                       </div>
@@ -187,7 +188,7 @@ export default function Home() {
 
                       <div className="col-6 col-lg">
                         <div className="d-stack align-items-center gap-3 gap-lg-5">
-                          <ChoiceButton choice={computerChoice} width={'70%'} />
+                          <ChoiceButton choice={computerChoice} width={'70%'} ripple={doneThinking && winner === 'computer'} />
                           <p className="fw-bold fs-6 fs-lg-4 tracking-wider order-lg-first">THE HOUSE PICKED</p>
                         </div>
                       </div>

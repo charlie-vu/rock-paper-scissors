@@ -1,10 +1,12 @@
 import { game } from "@/utils/helper";
+import Ripple from "./Ripple";
 
 export default function ChoiceButton(props) {
     const {
         className = '',
         choice = '',
         width = 0,
+        ripple = false,
     } = props;
     return (
         <>
@@ -14,7 +16,8 @@ export default function ChoiceButton(props) {
                         <img src={game.icons[choice]} alt={choice} style={{ width: '45%' }} />
                     </div>
                 </div>
-            </div >
+                {ripple && <Ripple />}
+            </div>
 
         </>
     )
