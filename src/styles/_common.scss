@@ -75,6 +75,16 @@ a {
   }
 }
 
+.hover-scale {
+  transition: all 0.2s;
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
 .btn {
   transition: all 0.1s;
   border-radius: 8px;

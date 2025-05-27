@@ -1,12 +1,17 @@
 'use client';
 import { AnimatePresence, motion } from 'motion/react';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 import { fromRight, scale, vortex } from '@/utils/transition';
 import PlayerBoard from '@/components/PlayerBoard';
 import { game } from '@/utils/helper';
 import ChoiceButton from '@/components/ChoiceButton';
 import _ from 'lodash';
+import { Modal } from 'react-bootstrap';
+import { useScreen } from '@/hooks/useScreen';
+
+const logo = '/images/logo.svg';
+const logoBonus = '/images/logo-bonus.svg';
 
 export default function Home() {
   const [playerChoice, setPlayerChoice] = useState(null);
@@ -15,7 +20,26 @@ export default function Home() {
   const [winner, setWinner] = useState(null);
 
   const [isBonus, setIsBonus] = useState(true);
-  const [choiceList, setChoiceList] = useState([])
+  const [choiceList, setChoiceList] = useState([]);
+
+  const [showRules, setShowRules] = useState(false);
+
+  const [score, setScore] = useState(0);
+  const mounted = useRef(null)
+
+  const screen = useScreen();
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    sessionStorage.setItem('score', score)
+    console.log(sessionStorage.getItem('score'))
+  }, [score])
+  useEffect(() => {
+    sessionStorage.getItem('score') && setScore(parseInt(sessionStorage.getItem('score')));
+  }, [])
 
   const resultStrings = {
     user: 'YOU WIN',
@@ -39,9 +63,11 @@ export default function Home() {
     if (playerChoice === computerChoice) {
       setWinner('tie')
     } else if (game.rules[playerChoice].includes(computerChoice)) {
-      setWinner('user')
+      setWinner('user');
+      setScore((prev) => parseInt(prev) + 1)
     } else {
       setWinner('computer')
+      setScore((prev) => parseInt(prev) - 1)
     }
   }
 
@@ -117,40 +143,24 @@ export default function Home() {
             <div className="d-flex gap-3 justify-content-between align-items-center">
 
               <AnimatePresence mode='wait'>
-                <motion.div key={isBonus} {...fromRight} className="fs-4" style={{ lineHeight: 0.8 }}>
-                  {
-                    isBonus ?
-                      <>
-                        <p>ROCK</p>
-                        <p>PAPER</p>
-                        <p>SCISSORS</p>
-                        <p>LIZARD</p>
-                        <p>SPOCK</p>
-                      </>
-                      :
-                      <>
-                        <p>ROCK</p>
-                        <p>PAPER</p>
-                        <p>SCISSORS</p>
-                      </>
-                  }
-                </motion.div>
+                <motion.img key={isBonus} {...fromRight} src={isBonus ? logoBonus : logo} alt="logo" />
               </AnimatePresence>
 
               <div className="card p-3 px-lg-5 py-3 text-center">
                 <p className="text-score tracking-widest fs-5">SCORE</p>
-                <p className="display-4 lh-1 fw-bold text-dark">999</p>
+                <p className="display-4 lh-1 fw-bold text-dark">{score}</p>
               </div>
             </div>
           </div>
 
-          <div className="py-5 overflow-hidden">
+          <div className="pt-5 overflow-hidden">
             <AnimatePresence mode='wait'>
               {
                 !playerChoice ?
-                  <motion.div key={`${playerChoice}-${isBonus}`} {...vortex}>
-                    <PlayerBoard choiceList={choiceList} onChange={(e) => { setPlayerChoice(e) }} onChangeMode={() => { setIsBonus((prev) => !prev) }} />
+                  <motion.div key={`${playerChoice}`} {...vortex}>
+                    <PlayerBoard choiceList={choiceList} isBonusMode={isBonus} onChange={(e) => { setPlayerChoice(e) }} onChangeMode={() => { setIsBonus((prev) => !prev) }} />
                   </motion.div> :
+
                   <motion.div key={playerChoice} {...scale}>
 
                     <div className="row text-center justify-content-center gx-0 mt-5">
@@ -195,9 +205,19 @@ export default function Home() {
         <div className="container">
           <div className="d-flex flex-column flex-lg-row gap-3 justify-content-end align-items-center">
             <button className="btn btn-outline-light text-uppercase" onClick={() => { setIsBonus((prev) => !prev) }} disabled={playerChoice}>Change Mode</button>
-            <button className="btn btn-outline-light text-uppercase">Rules</button>
+            <button className="btn btn-outline-light text-uppercase" onClick={() => { setShowRules(true) }}>Rules</button>
           </div>
         </div>
+
+        <Modal show={showRules} onHide={() => { setShowRules(false) }} fullscreen="md-down" centered>
+          <Modal.Body className="p-5 my-5 my-md-0">
+            <div className="position-relative h-100 d-stack gap-5 justify-content-between align-items-center">
+              <h2 className="fw-bold text-center text-md-start w-100">RULES</h2>
+              <img src={`/images/image-rules${isBonus ? '-bonus' : ''}.svg`} alt="rules" className="w-100" />
+              <img src="/images/icon-close.svg" alt="close" className={`mt-2 cursor-pointer ${screen?.gt?.md ? 'position-absolute top-0 end-0' : ''}`} onClick={() => { setShowRules(false) }} />
+            </div>
+          </Modal.Body>
+        </Modal>
       </div>
     </>
   )
